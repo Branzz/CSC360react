@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import DateUtil from "./DateUtil";
 
-export default function CreateTodo({ todos, setTodos, user }) {
+export default function CreateTodo({ dispatch, user }) {
     const [title, setTitle] = useState("");
     function handleTitle(evt) {
         setTitle(evt.target.value)
@@ -11,7 +10,7 @@ export default function CreateTodo({ todos, setTodos, user }) {
         setDescription(evt.target.value)
     }
     function addTodo() {
-        setTodos([{ title, user, description, dateCreated: DateUtil.currentDate(), complete:false }, ...todos])
+        dispatch({type: "ADD_TODO", author: user, title, description, dateComplete: undefined})
     }
     return (
         <form onSubmit={(e) => { e.preventDefault(); addTodo(); }}>

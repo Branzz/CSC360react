@@ -1,18 +1,12 @@
 import React from "react";
 import Todo from "./Todo";
 
-export default function TodoList({ todos = [], setTodos, user }) {
-    function setPost(index, todo) {
-        const updatedTodos = [...todos]
-        updatedTodos[index] = todo
-        setTodos(updatedTodos)
-    }
+export default function TodoList({ todos = [], dispatch, user }) {
     return (
         <div>
-            {todos.filter((todo) => todo.user === user)
-                .map((p, i) => (
-                    <Todo {...p} key={"todo-" + i} id={i} updateTodo={setPost}/>
-                ))}
+            {todos
+                // .filter((todo) => todo.user === user) // action.user to view others' todos
+                .map(p => <Todo {...p} key={"post-" + p.id} dispatch={dispatch}/>)}
         </div>
     );
 }

@@ -1,17 +1,8 @@
 import React from "react";
-import DateUtil from "./DateUtil"
 
-export default function Todo({ title, user, description, dateCreated, dateCompleted, complete, id, updateTodo }) {
-    function handleCompleteCheckbox(evt) {
-        const newTodo = {
-            title,
-            user,
-            description,
-            dateCreated,
-            dateCompleted: DateUtil.currentDate(),
-            complete: evt.target.checked,
-        }
-        updateTodo(id, newTodo)
+export default function Todo({ title, user, description, dateCreated, dateComplete, complete, id, dispatch }) {
+    function addTodo(e) {
+        dispatch({type: "COMPLETE_TODO", title, user, description, dateCreated, dateComplete, id, complete: e.target.checked});
     }
     return (
         <div>
@@ -19,9 +10,9 @@ export default function Todo({ title, user, description, dateCreated, dateComple
             <div>Created: {dateCreated}</div>
             <div>{description}</div>
             <div>
-                <input type="checkbox" value={complete} onChange={handleCompleteCheckbox}/>
+                <input type="checkbox" defaultChecked={complete} value={complete} onChange={addTodo}/>
             </div>
-            {complete && <div>Completed on: {dateCompleted}</div>}
+            {complete && <div>Completed on: {dateComplete}</div>}
         </div>
     );
 }
