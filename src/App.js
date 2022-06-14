@@ -1,28 +1,34 @@
-import React, { useState, useReducer, useEffect, createContext } from "react";
+import React, {useReducer, useEffect} from "react";
+import StateContext from "./Context";
+import appReducer from "./reducers";
 import UserBar from "./UserBar";
 import TodoList from "./TodoList";
 import CreateTodo from "./CreateTodo";
-import appReducer from "./reducers";
 
 function App() {
 
-    // useEffect(() => {
-    //     fetch('/api/todos')
-    //         .then(result => result.json())
-    //         .then(todos => dispatch({ type: 'FETCH_POSTS', todos }))
-    // }, [])
+    const [state, dispatch] = useReducer(appReducer, {user: '', todos: []}, null)
 
-    //const [user, setUser] = useState("");
-    // const [todos, setTodos] = useState([]);
-    const [state, dispatch] = useReducer(appReducer, {user: '', todos: []}, )
+    useEffect(() => {
+            console.log('user effect')
+            document.title = `${state.user ? (state.user + "'s") : "My"} Blog`
+        }, [state.user]
+    )
+
+    useEffect(() => {
+            console.log('post effect')
+        }, [state.todos]
+    )
 
     return (
+        <StateContext.Provider value={ {state, dispatch} }>
         <div>
             <h1>Welcome</h1>
-            <UserBar user={state.user} dispatch={dispatch} />
-            {state.user && <CreateTodo todos={state.todos} dispatch={dispatch} user={state.user} />}
-            {state.user && <TodoList todos={state.todos} dispatch={dispatch} user={state.user} />}
+            <UserBar/>
+            <CreateTodo/>
+            <TodoList/>
         </div>
+        </StateContext.Provider>
     );
 }
 
